@@ -4,12 +4,12 @@
 
 "💁 So this is kubectl but extra, Yeah, pretty much."
 
-KubectlXtra is a wrapper that extends the functionality of `kubectl` command-line tool, providing additional
+`kubectlxtra` is a wrapper that extends the functionality of `kubectl` command-line tool, providing additional
 features and simplifications for managing Kubernetes clusters.
 
 ## Features
 
-- Login to Kubernetes clusters with ease using enhanced login functionality.
+- Login to Kubernetes clusters with ease using enhanced login/logout functionality.
 - Display available namespaces with detailed information about access rights.
 - Switch between namespaces seamlessly for efficient cluster management.
 
@@ -22,6 +22,7 @@ features and simplifications for managing Kubernetes clusters.
 ## Requirements
 
 - `kubectl` installed.
+- `awk` installed.
 
 ## Installation
 
@@ -52,6 +53,11 @@ To use `kubectlxtra`, execute the script with desired commands:
 kubectlxtra login --server=<server_url> --token=<service_account_token> [other_options...]
 
 > kubectlxtra login --server=https://example.com --token=XXXXXXXXXXXXX
+```
+
+```shell
+# Logout from a Kubernetes cluster and delete credentials
+kubectlxtra logout
 ```
 
 ```shell
