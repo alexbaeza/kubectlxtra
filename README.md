@@ -29,16 +29,16 @@ features and simplifications for managing Kubernetes clusters.
 To install KubectlXtra, follow these simple steps:
 
 ```shell
-curl -LO "https://github.com/example/kubectlxtra/raw/main/kubectlxtra.sh"
+curl -LO "https://github.com/alexbaeza/kubectlxtra/raw/main/kubectlxtra.sh"
 chmod +x kubectlxtra.sh
-sudo mv kubectlxtra.sh /usr/local/bin/kubectlxtra
+mv kubectlxtra.sh /usr/local/bin/kubectlxtra
 ```
 
 **Note:** 
 If you do not have root access on the target system, you can still install `kubectlxtra` to the `~/.local/bin` directory:
 
 ```shell
-curl -LO "https://github.com/example/kubectlxtra/raw/main/kubectlxtra.sh"
+curl -LO "https://github.com/alexbaeza/kubectlxtra/raw/main/kubectlxtra.sh"
 chmod +x kubectlxtra.sh
 mv ./kubectlxtra.sh ~/.local/bin/kubectl
 # and then append (or prepend) ~/.local/bin to $PATH
