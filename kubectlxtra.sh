@@ -71,6 +71,16 @@ helper_display_namespace_list() {
     echo "Using namespace '$current_namespace' on cluster $current_server"
 }
 
+
+#Function used to check if a user is logged in
+helper_check_cluster_info() {
+    local error_message
+    if ! error_message=$(kubectl_cmd cluster-info 2>&1 >/dev/null); then
+        echo "Error: $error_message"
+        return 1
+    fi
+}
+
 # Function to execute kubectlxtra namespaces list command
 execute_enhanced_namespace_list() {
     local NAMESPACES_ARRAY
@@ -85,7 +95,7 @@ execute_enhanced_namespace_list() {
 # Function to execute kubectlxtra logout command
 execute_enhanced_logout() {
     # Check if logged in
-    if kubectl_cmd cluster-info &>/dev/null; then
+    if helper_check_cluster_info; then
         local user
         local context
         local cluster
@@ -111,6 +121,7 @@ execute_enhanced_logout() {
 execute_enhanced_login() {
     local server
     local token
+    local ca_cert
     local insecure_skip_tls_verify
     local cluster_name
 
@@ -123,6 +134,10 @@ execute_enhanced_login() {
             ;;
         --token=*)
             token="${1#*=}"
+            shift
+            ;;
+        --ca-cert=*)
+            ca_cert="${1#*=}"
             shift
             ;;
         --name=*)
@@ -138,11 +153,13 @@ execute_enhanced_login() {
             echo "Help for 'login' command:"
             echo "  --server                    The server URL to connect to (required)"
             echo "  --token                     The token to authenticate with (required)"
-            echo "  --insecure-skip-tls-verify  Skip TLS certificate verification (defaults to false)"
+            echo "  --ca-cert                   The ca-cert (optional)"
+            echo "  --insecure-skip-tls-verify  Skip TLS certificate verification (defaults to false) This will make your HTTPS connections insecure"
             echo "  --name                      The name of the cluster (optional)"
             echo
             echo "Example"
             echo "kubectlxtra login --server=https://192.168.1.254:6443 --token=XXXXXXX"
+            echo "kubectlxtra login --server=https://192.168.1.254:6443 --token=XXXXXXX --ca-cert=XXXXXXX"
             echo "kubectlxtra login --server=https://192.168.1.254:6443 --token=XXXXXXX --insecure-skip-tls-verify=true"
             exit 0
             ;;
@@ -158,19 +175,23 @@ execute_enhanced_login() {
     fi
 
     # Set default value for insecure_skip_tls_verify
-    insecure_skip_tls_verify="${insecure_skip_tls_verify:-true}"
+    insecure_skip_tls_verify="${insecure_skip_tls_verify:-false}"
     cluster_name=${cluster_name:-$(helper_strip_http_https "$server")}
     local user_name="kubernetes-service-account"
 
     # Set Credentials
+    if [[ -z "$ca_cert" ]]; then
+        kubectl_silent_cmd config set-cluster "$cluster_name" --server="$server" --insecure-skip-tls-verify="$insecure_skip_tls_verify"
+    else
+        kubectl_silent_cmd config set-cluster "$cluster_name" --server="$server" --certificate-authority-data="$ca_cert"
+    fi
     kubectl_silent_cmd config set-credentials "$user_name" --token="$token"
-    kubectl_silent_cmd config set-cluster "$cluster_name" --server="$server" --insecure-skip-tls-verify="$insecure_skip_tls_verify"
     kubectl_silent_cmd config set-context "$cluster_name" --cluster="$cluster_name" --user="$user_name"
 
     # Switch to new credentials
     kubectl_silent_cmd config use-context "$cluster_name"
 
-    if kubectl_silent_cmd cluster-info >/dev/null 2>&1; then
+    if helper_check_cluster_info; then
         namespaces=$(helper_kubectl_get_namespaces_list)
         IFS=' ' read -r -a namespaces_array <<<"$namespaces"
 
