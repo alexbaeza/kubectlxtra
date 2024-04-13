@@ -1,11 +1,19 @@
+<div style="text-align: center" align="center">
+
 # KubectlXtra
 
-"📰 Extra! Extra! Read all about it! KubectlXtra is Here for your convenience."
+> `kubectlxtra` is a wrapper that extends the functionality of `kubectl` command-line tool, providing additional
+> features and simplifications for managing Kubernetes clusters.
 
-"💁 So this is kubectl but extra, Yeah, pretty much."
+> "📰 Extra! Extra! Read all about it! KubectlXtra is Here for your convenience."
+> 
+> "💁 So this is kubectl but extra, Yeah, pretty much."
 
-`kubectlxtra` is a wrapper that extends the functionality of `kubectl` command-line tool, providing additional
-features and simplifications for managing Kubernetes clusters.
+
+[![Commits](https://img.shields.io/github/commit-activity/w/alexbaeza/kubectlxtra?style=flat)](https://github.com/alexbaeza/kubectlxtra/pulse)
+[![Issues](https://img.shields.io/github/issues/alexbaeza/kubectlxtra.svg?style=flat)](https://github.com/alexbaeza/kubectlxtra/issues)
+[![Releases](https://img.shields.io/github/v/release/alexbaeza/kubectlxtra.svg?style=flat)](https://github.com/alexbaeza/kubectlxtra/releases)
+</div>
 
 ## Features
 
@@ -34,8 +42,9 @@ chmod +x kubectlxtra.sh
 mv kubectlxtra.sh /usr/local/bin/kubectlxtra
 ```
 
-**Note:** 
-If you do not have root access on the target system, you can still install `kubectlxtra` to the `~/.local/bin` directory:
+**Note:**
+If you do not have root access on the target system, you can still install `kubectlxtra` to the `~/.local/bin`
+directory:
 
 ```shell
 curl -LO "https://github.com/alexbaeza/kubectlxtra/raw/main/kubectlxtra.sh"
