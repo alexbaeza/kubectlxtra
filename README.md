@@ -147,3 +147,4 @@ sure to check the existing issues and PRs to avoid duplication. We appreciate yo
 
 This project is licensed under the MIT License.
 See the [LICENSE](https://github.com/example/kubectlxtra/raw/main/LICENSE) file for details.
+
